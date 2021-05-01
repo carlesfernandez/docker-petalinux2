@@ -1,0 +1,14 @@
+petalinux-v*final-installer.run
+*~
+.*.swp
+.settings
+.project
+.cproject
+.idea
+.DS_Store
+.pydevproject
+.vscode/
+.vs/
+tftpboot/
+etc/tftpboot/
+Testing/
