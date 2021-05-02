@@ -1,4 +1,8 @@
 petalinux-v*final-installer.run
+Xilinx_Unified_*.tar.gz
+vivado*
+*.log
+vitis*
 *~
 .*.swp
 .settings

@@ -6,3 +6,6 @@ README.md
 .git
 .cache
 tftpboot/
+vivado*
+*.log
+vitis*
