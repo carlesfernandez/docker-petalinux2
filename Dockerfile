@@ -11,64 +11,73 @@ MAINTAINER Carles Fernandez-Prades <carles.fernandez@cttc.es>
 # install dependences:
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-  build-essential \
-  sudo \
-  tofrodos \
-  iproute2 \
-  gawk \
-  net-tools \
-  expect \
-  libncurses5-dev \
-  tftpd \
-  update-inetd \
-  libssl-dev \
-  flex \
-  bison \
-  libselinux1 \
-  gnupg \
-  wget \
-  socat \
-  gcc-multilib \
-  libsdl1.2-dev \
-  libglib2.0-dev \
-  lib32z1-dev \
-  libgtk2.0-0 \
-  screen \
-  pax \
-  diffstat \
-  xvfb \
-  xterm \
-  texinfo \
-  gzip \
-  unzip \
-  cpio \
-  chrpath \
   autoconf \
-  lsb-release \
+  bc \
+  bison \
+  build-essential \
+  ca-certificates \
+  chrpath \
+  cpio \
+  curl \
+  dbus \
+  dbus-x11 \
+  debianutils \
+  diffstat \
+  expect \
+  flex \
+  fonts-droid-fallback \
+  fonts-ubuntu-font-family-console \
+  gawk \
+  gcc-multilib \
+  git \
+  gnupg \
+  gtk2-engines \
+  gzip \
+  iproute2 \
+  iputils-ping \
+  kmod \
+  lib32z1-dev \
+  libegl1-mesa \
+  libglib2.0-dev \
+  libgtk2.0-0 \
+  libjpeg62-dev \
+  libncurses5-dev \
+  libsdl1.2-dev \
+  libselinux1 \
+  libssl-dev \
   libtool \
   libtool-bin \
   locales \
-  kmod \
-  git \
-  rsync \
-  bc \
-  u-boot-tools \
-  python \
-  xxd \
-  repo \
-  nano \
-  libjpeg62-dev \
+  lsb-release \
   lxappearance \
-  fonts-droid-fallback \
+  nano \
+  net-tools \
+  pax \
+  pylint3 \
+  python3 \
+  python3-pexpect \
+  python3-pip \
+  python3-git \
+  python3-jinja2 \
+  repo \
+  rsync \
+  screen \
+  socat \
+  sudo \
+  texinfo \
+  tftpd \
+  tofrodos \
   ttf-ubuntu-font-family \
-  fonts-ubuntu-font-family-console \
-  ca-certificates \
-  curl \
-  xorg \
-  dbus \
-  dbus-x11 \
+  u-boot-tools \
   ubuntu-gnome-default-settings \
-  gtk2-engines \
+  unzip \
+  update-inetd \
+  wget \
+  xorg \
+  xterm \
+  xvfb \
+  xxd \
+  zlib1g-dev \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
