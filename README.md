@@ -32,7 +32,7 @@ The PetaLinux Installer is to be downloaded from the
 [Xilinx's Embedded Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
 
 Place the downloaded `petalinux-v<VERSION>-final-installer.run` file (where
-`<VERSION>` can be `2020.1`, `2020.2`, ...) in the same folder than the
+`<VERSION>` can be `2020.1`, `2020.2`, ...) in the same folder as the
 Dockerfile.
 
 ### Prepare the Vivado installer (optional)
@@ -140,7 +140,8 @@ Enjoy!
 
 ## Copyright and License
 
-Copyright: &copy; 2021 Carles Fern&aacute;ndez-Prades. All rights reserved.
+Copyright: &copy; 2021 Carles Fern&aacute;ndez-Prades,
+[CTTC](http://www.cttc.es/). All rights reserved.
 
 The content of this repository is published under the [MIT](./LICENSE) license.
 
