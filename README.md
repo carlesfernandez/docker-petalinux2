@@ -42,7 +42,7 @@ Optionally, Vivado can be downloaded from the
 Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 
 The file is called something like `Xilinx_Unified_<VERSION>_XXXX_YYYY.tar.gz`.
-Place it in the same folder than the Dockerfile. The building script will guess
+Place it in the same folder as the Dockerfile. The building script will guess
 its exact name automatically.
 
 If this file is present when building the image, the Docker image will be about
