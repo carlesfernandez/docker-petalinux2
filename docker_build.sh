@@ -13,12 +13,15 @@ if [ ! -f "$PLNX" ] ; then
 fi
 
 INSTALL_VIVADO=""
-VIVADO_INSTALLER=$(ls | grep Xilinx_Unified_${XILVER}* | tail -1)
-if [ ${VIVADO_INSTALLER} ] ; then
+VIVADO_INSTALLER_GLOB=Xilinx_Unified_"${XILVER}"
+VIVADO_INSTALLER=$(find . -maxdepth 1 -name "${VIVADO_INSTALLER_GLOB}*" | tail -1)
+if [ "${VIVADO_INSTALLER}" ] ; then
     echo "Vivado installer found: ${VIVADO_INSTALLER}"
     echo "It will be installed in the Docker image"
     INSTALL_VIVADO="--build-arg VIVADO_INSTALLER=${VIVADO_INSTALLER}"
+else
+    echo "Xilinx Unified installer not found"
 fi
 
 echo "Creating Docker image docker_petalinux2:$XILVER..."
-time docker build --build-arg PETA_VERSION=${XILVER} --build-arg PETA_RUN_FILE=${PLNX} ${INSTALL_VIVADO} -t docker_petalinux2:${XILVER} .
+time docker build --build-arg PETA_VERSION="${XILVER}" --build-arg PETA_RUN_FILE="${PLNX}" "${INSTALL_VIVADO}" -t docker_petalinux2:"${XILVER}" .
