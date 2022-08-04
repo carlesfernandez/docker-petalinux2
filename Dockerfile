@@ -126,12 +126,15 @@ RUN \
 # make /bin/sh symlink to bash instead of dash:
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+# not really necessary, just to make it easier to install packages on the run...
+RUN echo "root:petalinux" | chpasswd
 
 USER petalinux
 ENV HOME /home/petalinux
 ENV LANG en_US.UTF-8
 RUN mkdir /home/petalinux/project
 WORKDIR /home/petalinux/project
+ENV SHELL /bin/bash
 
 # add petalinux tools to path
 
@@ -149,4 +152,4 @@ EXPOSE 69/udp
 
 USER petalinux
 
-ENTRYPOINT ["/bin/sh", "-l"]
+ENTRYPOINT ["/bin/bash", "-l"]
