@@ -78,14 +78,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   xvfb \
   xxd \
   zlib1g-dev \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN dpkg --add-architecture i386 && apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   zlib1g:i386 libc6-dev:i386 \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 ARG PETA_VERSION
 ARG PETA_RUN_FILE
@@ -106,7 +106,7 @@ RUN chmod a+rx /${PETA_RUN_FILE} && \
   chmod 777 /tmp /opt/Xilinx && \
   cd /tmp && \
   sudo -u petalinux -i /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
-  rm -f /${PETA_RUN_FILE} /accept-eula.sh
+  rm -f /${PETA_RUN_FILE} /accept-eula.sh || true
 
 ARG VIVADO_INSTALLER
 
@@ -115,12 +115,12 @@ COPY Xilinx_Unified_${PETA_VERSION}_*.tar.gz /vivado-installer/
 
 RUN \
   if [ "$VIVADO_INSTALLER" ] ; then \
-    cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
-    /vivado-installer/xsetup \
-      --agree 3rdPartyEULA,WebTalkTerms,XilinxEULA \
-      --batch Install \
-      --config /vivado-installer/install_config.txt && \
-    rm -rf /vivado-installer ; \
+  cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
+  /vivado-installer/xsetup \
+  --agree 3rdPartyEULA,WebTalkTerms,XilinxEULA \
+  --batch Install \
+  --config /vivado-installer/install_config.txt && \
+  rm -rf /vivado-installer ; \
   fi
 
 # make /bin/sh symlink to bash instead of dash:
@@ -144,7 +144,7 @@ USER root
 RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /tftpboot" >> /etc/profile && \
   echo ". /opt/Xilinx/petalinux/settings.sh" >> /etc/profile && \
   if [ "$VIVADO_INSTALLER" ] ; then \
-    echo ". /tools/Xilinx/Vivado/${PETA_VERSION}/settings64.sh" >> /etc/profile ; \
+  echo ". /tools/Xilinx/Vivado/${PETA_VERSION}/settings64.sh" >> /etc/profile ; \
   fi && \
   echo ". /etc/profile" >> /root/.profile
 
