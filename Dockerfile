@@ -37,6 +37,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   iputils-ping \
   kmod \
   lib32z1-dev \
+  libcanberra-gtk-module \
   libegl1-mesa \
   libglib2.0-dev \
   libgtk2.0-0 \
