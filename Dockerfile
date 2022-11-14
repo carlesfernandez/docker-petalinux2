@@ -45,6 +45,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   libsdl1.2-dev \
   libselinux1 \
   libssl-dev \
+  libswt-gtk-4-jni \
   libtool \
   libtool-bin \
   locales \
@@ -109,6 +110,7 @@ RUN chmod a+rx /${PETA_RUN_FILE} && \
   rm -f /${PETA_RUN_FILE} /accept-eula.sh || true
 
 ARG VIVADO_INSTALLER
+ARG VIVADO_AGREE="XilinxEULA,3rdPartyEULA"
 
 COPY install_config.txt /vivado-installer/
 COPY Xilinx_Unified_${PETA_VERSION}_*.tar.gz /vivado-installer/
@@ -117,7 +119,7 @@ RUN \
   if [ "$VIVADO_INSTALLER" ] ; then \
   cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
   /vivado-installer/xsetup \
-  --agree 3rdPartyEULA,WebTalkTerms,XilinxEULA \
+  --agree ${VIVADO_AGREE} \
   --batch Install \
   --config /vivado-installer/install_config.txt && \
   rm -rf /vivado-installer ; \
