@@ -32,8 +32,8 @@ fi
 cd ..
 
 # shellcheck disable=SC2009
-if ! ps -fC python | grep "http.server" > /dev/null ; then
-    python -m "http.server" &
+if ! ps -fC python3 | grep "http.server" > /dev/null ; then
+    python3 -m "http.server" &
     HTTPID=$!
     echo "HTTP Server started as PID $HTTPID"
     trap 'kill $HTTPID' EXIT QUIT SEGV INT HUP TERM ERR

@@ -103,10 +103,10 @@ RUN adduser --disabled-password --gecos '' petalinux && \
   echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 COPY accept-eula.sh /
+ADD ${HTTP_SERV}/${PETA_RUN_FILE} /
 
 # run the install
-RUN cd / && wget -q ${HTTP_SERV}/${PETA_RUN_FILE} && \
-  chmod a+rx /${PETA_RUN_FILE} && \
+RUN chmod a+rx /${PETA_RUN_FILE} && \
   chmod a+rx /accept-eula.sh && \
   mkdir -p /opt/Xilinx && \
   chmod 777 /tmp /opt/Xilinx && \
@@ -121,7 +121,7 @@ COPY install_config.txt /vivado-installer/
 
 RUN \
   if [ "$VIVADO_INSTALLER" ] ; then \
-  cd /vivado-installer/ && wget -q ${HTTP_SERV}/Xilinx_Unified_${PETA_VERSION}_*.tar.gz && cd .. && \
+  cd /vivado-installer/ && wget -q ${HTTP_SERV}/${VIVADO_INSTALLER} && cd .. && \
   cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
   /vivado-installer/xsetup \
   --agree ${VIVADO_AGREE} \
