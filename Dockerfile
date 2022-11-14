@@ -92,6 +92,9 @@ RUN dpkg --add-architecture i386 && apt-get update && \
 ARG PETA_VERSION
 ARG PETA_RUN_FILE
 
+# The HTTP server to retrieve the files from.
+ARG HTTP_SERV=http://172.17.0.1:8000/installers
+
 RUN locale-gen en_US.UTF-8 && update-locale
 
 # make a petalinux user
@@ -99,10 +102,11 @@ RUN adduser --disabled-password --gecos '' petalinux && \
   usermod -aG sudo petalinux && \
   echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-COPY accept-eula.sh ${PETA_RUN_FILE} /
+COPY accept-eula.sh /
 
 # run the install
-RUN chmod a+rx /${PETA_RUN_FILE} && \
+RUN cd / && wget -q ${HTTP_SERV}/${PETA_RUN_FILE} && \
+  chmod a+rx /${PETA_RUN_FILE} && \
   chmod a+rx /accept-eula.sh && \
   mkdir -p /opt/Xilinx && \
   chmod 777 /tmp /opt/Xilinx && \
@@ -114,10 +118,10 @@ ARG VIVADO_INSTALLER
 ARG VIVADO_AGREE="XilinxEULA,3rdPartyEULA"
 
 COPY install_config.txt /vivado-installer/
-COPY Xilinx_Unified_${PETA_VERSION}_*.tar.gz /vivado-installer/
 
 RUN \
   if [ "$VIVADO_INSTALLER" ] ; then \
+  cd /vivado-installer/ && wget -q ${HTTP_SERV}/Xilinx_Unified_${PETA_VERSION}_*.tar.gz && cd .. && \
   cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
   /vivado-installer/xsetup \
   --agree ${VIVADO_AGREE} \

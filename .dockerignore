@@ -1,4 +1,5 @@
 etc/**
+installers/**
 docker-build.sh
 LICENSE
 README.md
