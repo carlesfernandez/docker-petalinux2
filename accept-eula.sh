@@ -30,7 +30,8 @@ expect {
     timeout { send "q"; sleep 1; exp_continue}
 }
 
-set timeout -1
-expect "INFO: Checking PetaLinux installer integrity..."
-expect "INFO: PetaLinux SDK has been installed"
+# set timeout -1
+
+# expect "INFO: Checking PetaLinux installer integrity..."
+# expect "INFO: Installing PetaLinux..."
 #interact
