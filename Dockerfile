@@ -89,18 +89,18 @@ RUN dpkg --add-architecture i386 && apt-get update && \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-ARG PETA_VERSION
-ARG PETA_RUN_FILE
-
-# The HTTP server to retrieve the files from.
-ARG HTTP_SERV=http://172.17.0.1:8000/installers
-
 RUN locale-gen en_US.UTF-8 && update-locale
 
 # make a petalinux user
 RUN adduser --disabled-password --gecos '' petalinux && \
   usermod -aG sudo petalinux && \
   echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+ARG PETA_VERSION
+ARG PETA_RUN_FILE
+
+# The HTTP server to retrieve the files from.
+ARG HTTP_SERV=http://172.17.0.1:8000/installers
 
 COPY accept-eula.sh /
 
@@ -112,7 +112,7 @@ RUN cd / && wget -q ${HTTP_SERV}/${PETA_RUN_FILE} && \
   chmod 777 /tmp /opt/Xilinx && \
   cd /tmp && \
   sudo -u petalinux -i /accept-eula.sh /${PETA_RUN_FILE} /opt/Xilinx/petalinux && \
-  rm -f /${PETA_RUN_FILE} /accept-eula.sh || rm -f /${PETA_RUN_FILE} /accept-eula.sh && true
+  rm -f /${PETA_RUN_FILE} /accept-eula.sh
 
 ARG VIVADO_INSTALLER
 ARG VIVADO_AGREE="XilinxEULA,3rdPartyEULA"
@@ -133,6 +133,7 @@ RUN \
 # make /bin/sh symlink to bash instead of dash:
 RUN echo "dash dash/sh boolean false" | debconf-set-selections
 RUN DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+
 # not really necessary, just to make it easier to install packages on the run...
 RUN echo "root:petalinux" | chpasswd
 
@@ -143,11 +144,8 @@ RUN mkdir /home/petalinux/project
 WORKDIR /home/petalinux/project
 ENV SHELL /bin/bash
 
-# add petalinux tools to path
-
 # Source settings at login
 USER root
-
 RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /tftpboot" >> /etc/profile && \
   echo ". /opt/Xilinx/petalinux/settings.sh" >> /etc/profile && \
   if [ "$VIVADO_INSTALLER" ] ; then \
