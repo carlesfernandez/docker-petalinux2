@@ -13,8 +13,8 @@ SPDX-FileCopyrightText: 2021 Carles Fernandez-Prades <carles.fernandez@cttc.es>
 A somehow generic Xilinx PetaLinux & Vivado Docker image, using Ubuntu 18.04 as
 the base image.
 
-PetaLinux version `2020.1` is the first version handled by this release. For
-former versions, please check
+PetaLinux version `2020.1` is the first version handled by this release, and the
+default version is `2021.2`. For former versions, please check
 [docker-petalinux](https://github.com/carlesfernandez/docker-petalinux).
 
 In order to use this tool, you need to
@@ -34,9 +34,9 @@ The PetaLinux Installer is to be downloaded from the
 Place the downloaded `petalinux-v<VERSION>-final-installer.run` file (where
 `<VERSION>` can be `2020.1`, `2021.2`, ...) in the `./installers` folder.
 
-### Prepare the Vivado installer (optional)
+### Prepare the Vivado / Vitis installer (optional)
 
-Optionally, Vivado can be downloaded from the
+Optionally, Vivado and Vitis can be downloaded from the
 [Xilinx's Vivado Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html).
 Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 
@@ -45,7 +45,7 @@ Place it in the `./installers` folder. The building script will guess its exact
 name automatically.
 
 If this file is present when building the image, the Docker image will be about
-120 GB so make sure you have enough space in `/var/lib/docker`. Be aware that
+138 GB so make sure you have enough space in `/var/lib/docker`. Be aware that
 the building process can take some hours.
 
 You can change your Docker disk utilization in the Docker GUI: select the Docker
@@ -64,7 +64,7 @@ this repository. Just be sure to set `Destination=/tools/Xilinx` as the path
 where Xilinx software will be installed on the image.
 
 If the Vivado installer file is not present in the folder when running the
-building script, the petalinux-only image will be about 11 GB and the building
+building script, the petalinux-only image will be about 14 GB and the building
 process will be much faster.
 
 ## Build the image
@@ -93,10 +93,10 @@ Otherwise, the arguments will be executed as a command. Example:
     user@host:/path/to/petalinux_project$ /path/to/petalin2.sh \
     "petalinux-create -t project --template zynq --name myproject"
 
-## Using Vivado graphical interface
+## Using Vivado / Vitis graphical interface
 
 If the Vivado installer was present when building the Docker image, you can
-execute Vivado from the shell spawn when running `petalin2.sh`.
+execute Vivado and Vitis from the shell spawn when running `petalin2.sh`.
 
 There are some steps on your side if you want to make use of Vivado's graphical
 interface before running the Docker container.
