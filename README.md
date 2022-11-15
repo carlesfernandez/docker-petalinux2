@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 )
 
 [comment]: # (
-SPDX-FileCopyrightText: 2021 Carles Fernandez-Prades <carles.fernandez@cttc.es>
+SPDX-FileCopyrightText: 2021-2022 Carles Fernandez-Prades <carles.fernandez@cttc.es>
 )
 <!-- prettier-ignore-end -->
 
@@ -17,10 +17,10 @@ PetaLinux version `2020.1` is the first version handled by this release, and the
 default version is `2021.2`. For former versions, please check
 [docker-petalinux](https://github.com/carlesfernandez/docker-petalinux).
 
-In order to use this tool, you need to
-[install Docker](https://docs.docker.com/get-docker/) in your machine. If you
-want to use the Vivado graphical interface, you will also need the ipconfig
-utility (on Debian/ubuntu: `sudo apt-get install net-tools`).
+In order to use this tool, you need to [install
+Docker](https://docs.docker.com/get-docker/) in your machine. If you want to use
+the Vivado/Vitis graphical interface, you will also need the ipconfig utility
+(on Debian/Ubuntu: `sudo apt-get install net-tools`).
 
 A Xilinx user ID is required to download the PetaLinux and Vivado installers.
 
@@ -80,7 +80,7 @@ Run:
 A helper script `petalin2.sh` is provided that should be run _inside_ a
 petalinux project directory. It basically is a shortcut to:
 
-    docker run -ti -v "$PWD":"$PWD" -w "$PWD" --rm -u petalinux petalinux:<latest version> $@
+    docker run -ti -v "$PWD":"$PWD" -w "$PWD" --rm -u petalinux docker_petalinux2:<latest version> $@
 
 When run without arguments, a shell will spawn, _with PetaLinux `settings.sh`
 already sourced_, so you can directly execute `petalinux-*` commands.
