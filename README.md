@@ -32,8 +32,7 @@ The PetaLinux Installer is to be downloaded from the
 [Xilinx's Embedded Design Tools website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-design-tools.html).
 
 Place the downloaded `petalinux-v<VERSION>-final-installer.run` file (where
-`<VERSION>` can be `2020.1`, `2021.2`, ...) in the same folder as the
-Dockerfile.
+`<VERSION>` can be `2020.1`, `2021.2`, ...) in the `./installers` folder.
 
 ### Prepare the Vivado installer (optional)
 
@@ -42,8 +41,8 @@ Optionally, Vivado can be downloaded from the
 Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 
 The file is called something like `Xilinx_Unified_<VERSION>_XXXX_YYYY.tar.gz`.
-Place it in the same folder as the Dockerfile. The building script will guess
-its exact name automatically.
+Place it in the `./installers` folder. The building script will guess its exact
+name automatically.
 
 If this file is present when building the image, the Docker image will be about
 120 GB so make sure you have enough space in `/var/lib/docker`. Be aware that

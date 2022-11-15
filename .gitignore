@@ -16,3 +16,8 @@ vitis*
 tftpboot/
 etc/tftpboot/
 Testing/
+installers/*.run
+installers/*.bin
+installers/*.tar
+installers/*.tgz
+installers/*.tar.gz
