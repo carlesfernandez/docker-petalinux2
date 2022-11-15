@@ -14,9 +14,7 @@ if [ ! -f "$PLNX" ] ; then
     exit 1
 fi
 
-INSTALL_VIVADO=""
 VIVADO_INSTALLER_GLOB=Xilinx_Unified_"${XILVER}"
-
 VIVADO_INSTALLER=$(find . -maxdepth 1 -name "${VIVADO_INSTALLER_GLOB}*" | tail -1)
 if [ "${VIVADO_INSTALLER}" ] ; then
     echo "Vivado installer found: ${VIVADO_INSTALLER}"
