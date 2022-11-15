@@ -8,8 +8,7 @@ LABEL version="2.0" description="Geniux builder" maintainer="carles.fernandez@ct
 # build with "docker build --build-arg PETA_VERSION=2021.2 --build-arg PETA_RUN_FILE=petalinux-v2021.2-final-installer.run -t docker_petalinux2:2021.2 ."
 # or "docker build --build-arg PETA_VERSION=2021.2 --build-arg PETA_RUN_FILE=petalinux-v2021.2-final-installer.run --build-arg VIVADO_INSTALLER=Xilinx_Unified_2021.2_1021_0703.tar.gz -t docker_petalinux2:2021.2 ."
 
-# install dependences:
-
+# Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   autoconf \
   bc \
