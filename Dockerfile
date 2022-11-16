@@ -55,6 +55,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   net-tools \
   pax \
   pylint3 \
+  python \
   python3 \
   python3-pexpect \
   python3-pip \
@@ -158,5 +159,7 @@ RUN echo "/usr/sbin/in.tftpd --foreground --listen --address [::]:69 --secure /t
 EXPOSE 69/udp
 
 USER petalinux
+
+RUN git config --global user.email "geniux@example.com" && git config --global user.name "Geniux"
 
 ENTRYPOINT ["/bin/bash", "-l"]
