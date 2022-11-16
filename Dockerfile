@@ -60,7 +60,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   python3-pip \
   python3-git \
   python3-jinja2 \
-  repo \
   rsync \
   screen \
   socat \
@@ -94,6 +93,10 @@ RUN locale-gen en_US.UTF-8 && update-locale
 RUN adduser --disabled-password --gecos '' petalinux && \
   usermod -aG sudo petalinux && \
   echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Install the repo tool to handle git submodules (meta layers) comfortably.
+ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
+RUN chmod 777 /usr/local/bin/repo
 
 ARG PETA_VERSION
 ARG PETA_RUN_FILE
