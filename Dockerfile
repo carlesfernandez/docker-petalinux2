@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText: 2021-2022, Carles Fernandez-Prades <carles.fernandez@cttc.es>
+# SPDX-FileCopyrightText: 2021-2023, Carles Fernandez-Prades <carles.fernandez@cttc.es>
 # SPDX-License-Identifier: MIT
 
 FROM ubuntu:18.04
 
-LABEL version="2.0" description="Geniux builder" maintainer="carles.fernandez@cttc.es"
+LABEL version="3.0" description="Geniux builder" maintainer="carles.fernandez@cttc.es"
 
 # build with "docker build --build-arg PETA_VERSION=2021.2 --build-arg PETA_RUN_FILE=petalinux-v2021.2-final-installer.run -t docker_petalinux2:2021.2 ."
 # or "docker build --build-arg PETA_VERSION=2021.2 --build-arg PETA_RUN_FILE=petalinux-v2021.2-final-installer.run --build-arg VIVADO_INSTALLER=Xilinx_Unified_2021.2_1021_0703.tar.gz -t docker_petalinux2:2021.2 ."
@@ -41,6 +41,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   libglib2.0-dev \
   libgtk2.0-0 \
   libjpeg62-dev \
+  libpython3.8-dev \
   libncurses5-dev \
   libsdl1.2-dev \
   libselinux1 \
@@ -106,8 +107,9 @@ ARG PETA_RUN_FILE
 ARG HTTP_SERV=http://172.17.0.1:8000/installers
 
 COPY accept-eula.sh /
+COPY y2k22_patch-1.2.zip /
 
-# run the install
+# run the Petalinux installer
 RUN cd / && wget -q ${HTTP_SERV}/${PETA_RUN_FILE} && \
   chmod a+rx /${PETA_RUN_FILE} && \
   chmod a+rx /accept-eula.sh && \
@@ -119,18 +121,42 @@ RUN cd / && wget -q ${HTTP_SERV}/${PETA_RUN_FILE} && \
 
 ARG VIVADO_INSTALLER
 ARG VIVADO_AGREE="XilinxEULA,3rdPartyEULA"
+ARG VIVADO_UPDATE
 
-COPY install_config.txt /vivado-installer/
+COPY install_config.txt /vivado-config/
 
 RUN \
   if [ "$VIVADO_INSTALLER" ] ; then \
-  cd /vivado-installer/ && wget -q ${HTTP_SERV}/${VIVADO_INSTALLER} && cd .. && \
+  mkdir -p /vivado-installer && cd /vivado-installer/ && wget -q ${HTTP_SERV}/${VIVADO_INSTALLER} && cd .. && \
   cat /vivado-installer/${VIVADO_INSTALLER} | tar zx --strip-components=1 -C /vivado-installer && \
+  cp /vivado-config/install_config.txt /vivado-installer/ && \
   /vivado-installer/xsetup \
   --agree ${VIVADO_AGREE} \
   --batch Install \
   --config /vivado-installer/install_config.txt && \
   rm -rf /vivado-installer ; \
+  fi
+
+# apply 2021.2.1 Update
+RUN \
+  if [ "$VIVADO_UPDATE" ] ; then \
+  mkdir -p /vivado-installer && cd /vivado-installer/ && wget -q ${HTTP_SERV}/${VIVADO_UPDATE} && cd .. && \
+  cat /vivado-installer/${VIVADO_UPDATE} | tar zx --strip-components=1 -C /vivado-installer && \
+  cp /vivado-config/install_config.txt /vivado-installer/ && \
+  /vivado-installer/xsetup \
+  --agree ${VIVADO_AGREE} \
+  --batch Update \
+  --config /vivado-installer/install_config.txt && \
+  rm -rf /vivado-installer ; \
+  fi
+
+# apply Vitis patch
+RUN \
+  if [ "$VIVADO_UPDATE" ] ; then \
+  mv /y2k22_patch-1.2.zip /tools/Xilinx/ && cd /tools/Xilinx/ && unzip y2k22_patch-1.2.zip && \
+  export LD_LIBRARY_PATH=$PWD/Vivado/2021.2/tps/lnx64/python-3.8.3/lib/ && \
+  ./Vivado/2021.2/tps/lnx64/python-3.8.3/bin/python3 y2k22_patch/patch.py && \
+  rm y2k22_patch-1.2.zip && rm -rf y2k22_patch ; \
   fi
 
 # make /bin/sh symlink to bash instead of dash:

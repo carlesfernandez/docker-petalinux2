@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 )
 
 [comment]: # (
-SPDX-FileCopyrightText: 2021-2022 Carles Fernandez-Prades <carles.fernandez@cttc.es>
+SPDX-FileCopyrightText: 2021-2023 Carles Fernandez-Prades <carles.fernandez@cttc.es>
 )
 <!-- prettier-ignore-end -->
 
@@ -43,6 +43,16 @@ Go there and choose the All OS installer Single-File Download (TAR/GZIP).
 The file is called something like `Xilinx_Unified_<VERSION>_XXXX_YYYY.tar.gz`.
 Place it in the `./installers` folder. The building script will guess its exact
 name automatically.
+
+> **Note for version 2021.2:**
+> You will need two extra files:
+>  * `y2k22_patch-1.2.zip`, downloadable from https://support.xilinx.com/s/article/76960?language=en_US
+>  * `Xilinx_Vivado_Vitis_Update_2021.2.1_1219_1431.tar.gz`, downloadable from
+https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html
+> Please place both files in the `installers/` folder.
+
+The Docker image will be about 210 GB so make sure you have enough space in
+`/var/lib/docker`. Be aware that the building process can take some hours.
 
 If this file is present when building the image, the Docker image will be about
 138 GB so make sure you have enough space in `/var/lib/docker`. Be aware that
@@ -139,7 +149,7 @@ Enjoy!
 
 ## Copyright and License
 
-Copyright: &copy; 2021 Carles Fern&aacute;ndez-Prades,
+Copyright: &copy; 2021-2023 Carles Fern&aacute;ndez-Prades,
 [CTTC](https://www.cttc.cat). All rights reserved.
 
 The content of this repository is published under the [MIT](./LICENSE) license.
