@@ -36,15 +36,21 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   iputils-ping \
   kmod \
   lib32z1-dev \
+  libbz2-dev \
   libcanberra-gtk-module \
   libegl1-mesa \
+  libffi-dev \
+  libgdbm-dev \
   libglib2.0-dev \
   libgtk2.0-0 \
   libjpeg62-dev \
   libpython3.8-dev \
   libncurses5-dev \
+  libnss3-dev \
+  libreadline-dev \
   libsdl1.2-dev \
   libselinux1 \
+  libsqlite3-dev \
   libssl-dev \
   libswt-gtk-4-jni \
   libtool \
@@ -55,6 +61,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   nano \
   net-tools \
   pax \
+  pkg-config \
   pylint3 \
   python \
   python3 \
@@ -90,6 +97,12 @@ RUN dpkg --add-architecture i386 && apt-get update && \
   && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8 && update-locale
+
+# Build and install Python 3.11, required by repo
+RUN wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz \
+  && tar -xf Python-3.11.*.tgz && cd Python-3.11.*/ \
+  && ./configure --enable-optimizations && make && make altinstall \
+  && cd .. && rm Python-3.11.*.tgz && rm -rf Python-3.11.*/
 
 # make a petalinux user
 RUN adduser --disabled-password --gecos '' petalinux && \
