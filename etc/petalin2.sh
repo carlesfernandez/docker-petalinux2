@@ -31,7 +31,7 @@ fi
 IFS=" " read -r -a OVERRIDE_ENTRYPOINT <<< "$OVERRIDE_ENTRYPOINT_AUX"
 IFS=" " read -r -a SET_DOCKER_COMMAND <<< "$SET_DOCKER_COMMAND_AUX"
 
-docker run -ti "${SET_X_SERVER[@]}" "${SET_MIRROR_PATH[@]}" -v "$PWD":"$PWD" -v "$PWD/tftpboot":/tftpboot -w "$PWD" --rm -u petalinux "${OVERRIDE_ENTRYPOINT[@]}" docker_petalinux2:"${latest}" "${SET_DOCKER_COMMAND[@]}"
+docker run -ti "${SET_X_SERVER[@]}" "${SET_MIRROR_PATH[@]}" -v "$PWD":"$PWD":z -v "$PWD/tftpboot":/tftpboot:z -w "$PWD" --rm -u petalinux "${OVERRIDE_ENTRYPOINT[@]}" docker_petalinux2:"${latest}" "${SET_DOCKER_COMMAND[@]}"
 
 if [ "$OVERRIDE_ENTRYPOINT_AUX" ]
     then
