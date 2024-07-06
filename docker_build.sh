@@ -1,12 +1,14 @@
 #!/bin/bash
 # SPDX-FileCopyrightText: 2021-2023, Carles Fernandez-Prades <carles.fernandez@cttc.es>
+# SPDX-FileCopyrightText: 2024, Max Wipfli <mail@maxwipfli.ch>
 # SPDX-License-Identifier: MIT
 
 # Default version 2021.2
 XILVER=${1:-2021.2}
 
 cd installers || exit
-# Check if the petalinux installer exists
+
+# Check for Petalinux installer
 PLNX="petalinux-v${XILVER}-final-installer.run"
 if [ ! -f "$PLNX" ] ; then
     echo "$PLNX installer not found"
@@ -14,34 +16,37 @@ if [ ! -f "$PLNX" ] ; then
     exit 1
 fi
 
-if [ "${XILVER}" == "2021.2" ] ; then
-    if [ ! -f "y2k22_patch-1.2.zip" ] ; then
-       echo "y2k22_patch-1.2.zip patch not found."
-       echo "Download it from https://support.xilinx.com/s/article/76960?language=en_US and place it in the installers folder"
-       cd ..
-       exit 1
-    else
-       cp y2k22_patch-1.2.zip ../
-    fi
-else
-    echo "" > ../y2k22_patch-1.2.zip
-fi
-
-if [ "${XILVER}" == "2021.2" ] ; then
-    VIVADO_UPDATE=Xilinx_Vivado_Vitis_Update_2021.2.1_1219_1431.tar.gz
-    if [ ! -f "$VIVADO_UPDATE" ] ; then
-        echo "$VIVADO_UPDATE installer not found."
-        echo "Download it from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html and place it in the installers folder"
-        cd ..
-        exit 1
-    fi
-fi
-
+# Check for Xilinx Unified installer (for Vivado)
 VIVADO_INSTALLER_GLOB=Xilinx_Unified_"${XILVER}"
 VIVADO_INSTALLER=$(find . -maxdepth 1 -name "${VIVADO_INSTALLER_GLOB}*" | tail -1)
+VIVADO_UPDATE="Xilinx_Vivado_Vitis_Update_2021.2.1_1219_1431.tar.gz"
+VIVADO_PATCH="y2k22_patch-1.2.zip"
+
+# Create dummy patch file in root directory (will be overwritten if required)
+echo "" > "../$VIVADO_PATCH"
+
 if [ "${VIVADO_INSTALLER}" ] ; then
-    echo "Vivado installer found: ${VIVADO_INSTALLER}"
-    echo "It will be installed in the Docker image."
+    echo "Xilinx Unified installer found: ${VIVADO_INSTALLER}"
+    echo "Vivado will be installed in the Docker image."
+
+    if [ "${XILVER}" == "2021.2" ] ; then
+        echo "Vivado version ${XILVER}: checking for required additional files."
+
+        if [ ! -f "$VIVADO_PATCH" ] ; then
+          echo "$VIVADO_PATCH patch not found."
+          echo "Download it from https://support.xilinx.com/s/article/76960?language=en_US and place it in the installers folder"
+          exit 1
+        fi
+
+        if [ ! -f "$VIVADO_UPDATE" ] ; then
+            echo "$VIVADO_UPDATE installer not found."
+            echo "Download it from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html and place it in the installers folder"
+            exit 1
+        fi
+
+        cp -f "$VIVADO_PATCH" ..
+    fi
+
     INSTALL_VIVADO=("--build-arg" VIVADO_INSTALLER="${VIVADO_INSTALLER}")
     if [ "${XILVER}" == "2020.1" ] ; then
         INSTALL_VIVADO=("--build-arg" VIVADO_INSTALLER="${VIVADO_INSTALLER}" "--build-arg" VIVADO_AGREE="3rdPartyEULA,WebTalkTerms,XilinxEULA")
@@ -51,6 +56,7 @@ if [ "${VIVADO_INSTALLER}" ] ; then
     fi
 else
     echo "Xilinx Unified installer not found."
+    echo "Vivado will NOT be installed in the Docker image."
 fi
 
 cd ..
