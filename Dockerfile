@@ -105,9 +105,14 @@ RUN wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz \
   && cd .. && rm Python-3.11.*.tgz && rm -rf Python-3.11.*/
 
 # make a petalinux user
-RUN adduser --disabled-password --gecos '' petalinux && \
+ARG UID
+ARG GID
+
+RUN groupadd --gid ${GID} petalinux_docker
+
+RUN adduser --uid ${UID} --gid ${GID} --disabled-password --gecos '' petalinux && \
   usermod -aG sudo petalinux && \
-  echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+  echo "petalinux ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers 
 
 # Install the repo tool to handle git submodules (meta layers) comfortably.
 ADD https://storage.googleapis.com/git-repo-downloads/repo /usr/local/bin/
